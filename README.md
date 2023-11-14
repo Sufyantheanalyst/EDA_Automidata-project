@@ -55,4 +55,9 @@ For EDA of the data, import the data and packages that would be most helpful, su
 
 Then, import the dataset.
 ```python
-print("Hello, world!")
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import datetime as dt
+import seaborn as sns
+
