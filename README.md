@@ -61,3 +61,6 @@ import numpy as np
 import datetime as dt
 import seaborn as sns
 
+```python
+df=pd.read_csv('2017_Yellow_Taxi_Trip_Data.csv')
+
