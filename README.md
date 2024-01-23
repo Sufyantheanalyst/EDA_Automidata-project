@@ -357,3 +357,48 @@ My other questions are .... There are several trips that have a trip distance of
 My client would likely want to know ... that the data includes dropoff and pickup times. We can use that information to derive a trip duration for each line of data. This would likely be something that will help the client with their model.
 # Tableau
 ![Total distance and Total amount TLC 2017](https://github.com/Sufyantheanalyst/EDA_Automidata-project/assets/129004768/5518be70-26bf-458d-b5e1-6658edf55448)
+# Statistical Analysis
+The goal is to apply descriptive statistic and hypothesis testing. The goal for this A/B test is to sameple data and analyze whether there is a relationship between payment type and fare amount.For example discover if customers who use credit cards pay high fare amounts than those who use cash.
+# Imports and data loading
+```python
+import panadas as pd
+from scipy import stats
+```
+As data has already loaded so I will move to next step.
+As a data prfessional I will use descriptive statistics for exploratory data analysis. In general descriptive statistics is useful to quiclly explore and understand large amount of data. In this project it will help quickly to compare the avaerage total fare amount among different payment types.
+```python
+# descriptive stats code for EDA
+taxi_data.describe(include = 'all')
+```
+![image](https://github.com/Sufyantheanalyst/EDA_Automidata-project/assets/129004768/115150f9-dd53-4cd3-ba37-a9d31a19fe62)
+```python
+taxi_data.groupby('payment_type')['fare_amount'].mean()
+```
+![image](https://github.com/Sufyantheanalyst/EDA_Automidata-project/assets/129004768/97aa8cef-4722-44fb-b46e-0badf4621890)
+Based on the average shown, it appears that customers who pay in credit card tend to pay larger fare amount than those who pays in cash. However, this difference might arise from random sampling, rather than being true difference in fare amount. To assess whether the difference is statistically significant, I will conduct a hypothesis testing.
+# Hypothesis Testing
+Steps for conducting hypothesis testing:
+1. State the null hypothesis and alternative hypothesis
+2. chose a significance level
+3. find the p-value
+4. reject or fail to reject the null hypothesis
+Note: For the purpose of this project, hypothesis test is main component for A/B test.
+Ho : there is no difference in average fare amount between customers who use credit cards and customers who use case.
+Ha : there is difference in average fare amount between customers who use credit cards and customers who use cash.
+I choose 5% significance level and proceed with two-sample test.
+```python
+# Hypothesis test, A/B test
+# Significance level
+credit_card = taxi_data[taxi_data['payment_type'] == 1]['fare_amount']
+cash = taxi_data[taxi_data['payment_type'] == 2]['fare_amount']
+stats.ttest_ind(a = credit_card, b = cash, equal_var = False)
+```
+![image](https://github.com/Sufyantheanalyst/EDA_Automidata-project/assets/129004768/aa840012-148c-4ce9-b09c-17da7a70a27c)
+since the p-value is significantly smaller than the significance level of 5%, I reject the null hypothesis and conclude that there is statistically significant difference in the average fare amount between customers who use credit card and who use cash.
+# Communicate insights with stakeholders
+1. The key business insight is that encouraging customers to pay with credit cards can generate more revenue for taxi cab drivers.
+2. This project requires an assumption that passengers were forced to pay one way or the other, and that once informed of this requirement, they always compiled with it. The data was not collected this way; so an assumption had to be made to randomly group data entries to perform A/B test. This dataset does not account for other likely explanations. For example riders might carry not lots of cash, so its easier to pay for longer/father trips with a credit card. In other words, its far more likely that fare amount determines payment type, rather than vice versa.
+
+
+
+
